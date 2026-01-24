@@ -1,7 +1,7 @@
 "use client";
 
-import { useMemo, useState } from "react";
 import dynamic from "next/dynamic";
+import { useMemo, useState } from "react";
 import { Header } from "@/components/Header";
 import {
   calculateWeightedAverage,
@@ -11,11 +11,17 @@ import { getScale } from "@/lib/scales";
 import type { AppState, Note } from "@/lib/types";
 
 // Lazy load heavy components to improve initial load
-const NoteList = dynamic(() => import("@/components/NoteList").then((mod) => ({ default: mod.NoteList })), {
-  loading: () => <div className="container mx-auto p-4">Loading...</div>,
-});
+const NoteList = dynamic(
+  () =>
+    import("@/components/NoteList").then((mod) => ({ default: mod.NoteList })),
+  {
+    loading: () => <div className="container mx-auto p-4">Loading...</div>,
+  },
+);
 
-const Footer = dynamic(() => import("@/components/Footer").then((mod) => ({ default: mod.Footer })));
+const Footer = dynamic(() =>
+  import("@/components/Footer").then((mod) => ({ default: mod.Footer })),
+);
 
 export default function Home() {
   const [notes, setNotes] = useState<Note[]>([]);

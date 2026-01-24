@@ -1,0 +1,97 @@
+---
+description: Generate commit messages following Conventional Commits format (commitlint config)
+alwaysApply: true
+---
+
+# Commit Message Format
+
+All commit messages MUST follow the [Conventional Commits](https://www.conventionalcommits.org/) specification as configured in `commitlint.config.js`.
+
+## Format
+
+```
+<type>(<scope>): <subject>
+
+<body>
+
+<footer>
+```
+
+## Required Structure
+
+1. **Type** (required): One of the allowed types below
+2. **Scope** (optional): A short description of what area of codebase is affected
+3. **Subject** (required): Brief description in imperative mood, lowercase, no period
+4. **Body** (optional): Detailed explanation, wrapped at 72 characters
+5. **Footer** (optional): Breaking changes or issue references
+
+## Allowed Types
+
+- `feat`: A new feature
+- `fix`: A bug fix
+- `docs`: Documentation only changes
+- `style`: Code style changes (formatting, missing semicolons, etc.)
+- `refactor`: Code change that neither fixes a bug nor adds a feature
+- `perf`: A code change that improves performance
+- `test`: Adding missing tests or correcting existing tests
+- `build`: Changes to build system or external dependencies
+- `ci`: Changes to CI configuration files and scripts
+- `chore`: Changes to the build process or auxiliary tools
+- `revert`: Reverts a previous commit
+
+## Examples
+
+### ✅ Good Examples
+
+```
+feat: add dark mode toggle to header
+fix: correct grade calculation for weighted average
+docs: update README with installation instructions
+chore: set up lint-staged and commitlint
+refactor: extract grade calculation logic to separate function
+test: add unit tests for percentage conversion
+perf: optimize grade table rendering with memoization
+```
+
+### ✅ With Scope
+
+```
+feat(ui): add responsive table layout
+fix(calc): handle edge case in weighted average
+chore(deps): update Next.js to 16.1.4
+```
+
+### ❌ Bad Examples
+
+```
+Add new feature
+Fixed bug
+update readme
+WIP: working on feature
+```
+
+## Guidelines
+
+- **Subject line**: 
+  - Use imperative mood ("add" not "added" or "adds")
+  - Start with lowercase
+  - No period at the end
+  - Maximum 50 characters (soft limit)
+  
+- **Body** (if needed):
+  - Explain what and why, not how
+  - Wrap at 72 characters
+  - Separate from subject with blank line
+
+- **Breaking changes**:
+  - Start footer with `BREAKING CHANGE:` or `!` after type
+  - Example: `feat!: remove deprecated API` or `feat(api)!: change response format`
+
+## When Generating Commits
+
+When suggesting or generating commit messages:
+1. Analyze the staged changes
+2. Determine the appropriate type
+3. Identify scope if relevant
+4. Write a clear, imperative subject
+5. Add body if the change needs explanation

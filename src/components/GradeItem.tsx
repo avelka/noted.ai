@@ -101,6 +101,7 @@ export function GradeItem({
         >
           <SelectTrigger
             id={`scale-${note.id}`}
+            aria-label="Scale"
             className="min-h-[44px] sm:min-h-0"
           >
             <SelectValue />
@@ -119,6 +120,7 @@ export function GradeItem({
         <Select value={currentGrade} onValueChange={handleGradeChange}>
           <SelectTrigger
             id={`grade-${note.id}`}
+            aria-label="Grade"
             className="min-h-[44px] sm:min-h-0"
           >
             <SelectValue />
@@ -144,6 +146,7 @@ export function GradeItem({
           step="1"
           value={note.value}
           onChange={(e) => handlePercentageChange(e.target.value)}
+          aria-label="Percentage"
           className="min-h-[44px] sm:min-h-0"
         />
       </div>
@@ -160,6 +163,7 @@ export function GradeItem({
           value={pointValue}
           onChange={(e) => handlePointsChange(e.target.value)}
           readOnly
+          aria-label="Points"
           className="appearance-none min-h-[44px] sm:min-h-0"
         />
       </div>
@@ -175,6 +179,7 @@ export function GradeItem({
             step="1"
             value={note.ratio}
             onChange={(e) => handleRatioChange(e.target.value)}
+            aria-label="Ratio"
             className="min-h-[44px] sm:min-h-0"
           />
         </div>

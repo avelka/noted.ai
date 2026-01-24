@@ -5,9 +5,18 @@
   "scripts": {
     "dev": "next dev --webpack",
     "build": "next build --webpack",
+    "postbuild": "touch out/.nojekyll",
     "start": "next start",
     "lint": "biome check",
-    "format": "biome format --write"
+    "format": "biome format --write",
+    "type-check": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui",
+    "knip": "knip",
+    "precommit": "pnpm type-check && pnpm exec lint-staged && pnpm test && pnpm knip",
+    "prepare": "husky"
   },
   "dependencies": {
     "@radix-ui/react-label": "^2.1.8",
@@ -24,6 +33,8 @@
   },
   "devDependencies": {
     "@biomejs/biome": "2.2.0",
+    "@commitlint/cli": "^20.3.1",
+    "@commitlint/config-conventional": "^20.3.1",
     "@ducanh2912/next-pwa": "^10.2.9",
     "@playwright/test": "^1.58.0",
     "@testing-library/jest-dom": "^6.9.1",
@@ -36,8 +47,10 @@
     "@vitest/ui": "^4.0.18",
     "autoprefixer": "^10.4.23",
     "babel-plugin-react-compiler": "1.0.0",
+    "husky": "^9.1.7",
     "jsdom": "^27.4.0",
     "knip": "^5.82.1",
+    "lint-staged": "^16.2.7",
     "postcss": "^8.5.6",
     "tailwindcss": "^3.4.19",
     "tailwindcss-animate": "^1.0.7",

@@ -43,6 +43,7 @@ export function NoteList({
               onPointsChange(value);
             }
           }}
+          aria-label="Max Points:"
           className="w-24"
         />
       </div>

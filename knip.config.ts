@@ -9,9 +9,9 @@ const config: KnipConfig = {
     "public/sw.js",
     "public/swe-worker-*.js",
     "public/workbox-*.js",
+    "public/fallback-*.js",
     "src/components/ui/**",
   ],
-  ignoreDependencies: ["@types/node", "@types/react", "@types/react-dom"],
 };
 
 export default config;

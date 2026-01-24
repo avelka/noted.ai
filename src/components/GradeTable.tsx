@@ -25,7 +25,10 @@ export function GradeTable({ globalScale, points }: GradeTableProps) {
       <Table aria-label={`Grade conversion table for ${globalScale} scale`}>
         <TableHeader>
           <TableRow>
-            <TableHead className="sticky left-0 z-10 bg-background border-r">
+            <TableHead
+              scope="row"
+              className="sticky left-0 z-10 bg-background border-r"
+            >
               Grade
             </TableHead>
             {scale.labels.map((label) => (
@@ -37,9 +40,12 @@ export function GradeTable({ globalScale, points }: GradeTableProps) {
         </TableHeader>
         <TableBody>
           <TableRow>
-            <TableCell className="sticky left-0 z-10 bg-background font-medium border-r">
+            <TableHead
+              scope="row"
+              className="sticky left-0 z-10 bg-background font-medium border-r"
+            >
               Percentage (≥)
-            </TableCell>
+            </TableHead>
             {scale.thresholds.map((threshold) => (
               <TableCell key={threshold} className="text-center">
                 {threshold}%
@@ -48,9 +54,12 @@ export function GradeTable({ globalScale, points }: GradeTableProps) {
           </TableRow>
           {points !== 100 && (
             <TableRow>
-              <TableCell className="sticky left-0 z-10 bg-background font-medium border-r">
+              <TableHead
+                scope="row"
+                className="sticky left-0 z-10 bg-background font-medium border-r"
+              >
                 Points
-              </TableCell>
+              </TableHead>
               {scale.thresholds.map((threshold) => (
                 <TableCell key={threshold} className="text-center">
                   {percentageToPoints(threshold, points)}

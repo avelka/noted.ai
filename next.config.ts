@@ -1,9 +1,20 @@
 import withPWA from "@ducanh2912/next-pwa";
 import type { NextConfig } from "next";
 
+// Extract repository name from environment variable for GitHub Pages basePath
+// Format: owner/repo-name -> /repo-name
+const getBasePath = () => {
+  if (process.env.GITHUB_REPOSITORY_NAME) {
+    return `/${process.env.GITHUB_REPOSITORY_NAME}`;
+  }
+  // Default fallback for local development
+  return "";
+};
+
 const nextConfig: NextConfig = {
   reactCompiler: true,
   output: "export",
+  basePath: getBasePath(),
   webpack: (config) => {
     return config;
   },

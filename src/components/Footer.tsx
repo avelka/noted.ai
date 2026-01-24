@@ -40,6 +40,7 @@ export function Footer({
           >
             <SelectTrigger
               id="global-scale"
+              aria-label="Global Scale:"
               className="w-28 sm:w-32 min-h-[36px] sm:min-h-0"
             >
               <SelectValue />

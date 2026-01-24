@@ -9,14 +9,16 @@ test.describe("Points Calculation", () => {
   test("should calculate points correctly with max points 50", async ({
     page,
   }) => {
-    // Set max points to 50
-    await page.getByLabel("Max Points:").fill("50");
-
     const percentageInput = page.getByLabel("Percentage").first();
-    const pointsInput = page.getByLabel("Points").first();
+    const pointsInput = page.getByTestId("grade-points-input").first();
 
-    // 50% of 50 = 25
+    // Set percentage first to establish a baseline
     await percentageInput.fill("50");
+    await expect(pointsInput).toHaveValue("50"); // 50% of 100 = 50
+
+    // Change max points to 50
+    await page.getByTestId("max-points-input").fill("50");
+    // Points should update: 50% of 50 = 25
     await expect(pointsInput).toHaveValue("25");
 
     // 100% of 50 = 50
@@ -33,7 +35,7 @@ test.describe("Points Calculation", () => {
   }) => {
     // Default max points is 100
     const percentageInput = page.getByLabel("Percentage").first();
-    const pointsInput = page.getByLabel("Points").first();
+    const pointsInput = page.getByTestId("grade-points-input").first();
 
     // 50% of 100 = 50
     await percentageInput.fill("50");
@@ -52,10 +54,13 @@ test.describe("Points Calculation", () => {
     page,
   }) => {
     // Set max points to 200
-    await page.getByLabel("Max Points:").fill("200");
+    const maxPointsInput = page.getByTestId("max-points-input");
+    await maxPointsInput.fill("200");
+    // Wait for max points to be updated
+    await expect(maxPointsInput).toHaveValue("200");
 
     const percentageInput = page.getByLabel("Percentage").first();
-    const pointsInput = page.getByLabel("Points").first();
+    const pointsInput = page.getByTestId("grade-points-input").first();
 
     // 50% of 200 = 100
     await percentageInput.fill("50");
@@ -74,10 +79,13 @@ test.describe("Points Calculation", () => {
     page,
   }) => {
     // Set max points to 500
-    await page.getByLabel("Max Points:").fill("500");
+    const maxPointsInput = page.getByTestId("max-points-input");
+    await maxPointsInput.fill("500");
+    // Wait for max points to be updated
+    await expect(maxPointsInput).toHaveValue("500");
 
     const percentageInput = page.getByLabel("Percentage").first();
-    const pointsInput = page.getByLabel("Points").first();
+    const pointsInput = page.getByTestId("grade-points-input").first();
 
     // 50% of 500 = 250
     await percentageInput.fill("50");
@@ -90,7 +98,8 @@ test.describe("Points Calculation", () => {
 
   test("should round points to 0.5 increments", async ({ page }) => {
     const percentageInput = page.getByLabel("Percentage").first();
-    const pointsInput = page.getByLabel("Points").first();
+    const pointsInput = page.getByTestId("grade-points-input").first();
+    const maxPointsInput = page.getByTestId("max-points-input");
 
     // 33% of 100 = 33, but formula rounds to nearest 0.5
     // Math.round((33/100) * 100 * 2) / 2 = Math.round(66) / 2 = 33
@@ -102,11 +111,13 @@ test.describe("Points Calculation", () => {
     // But since we're using integer percentages, let's test with a value that gives .5
     // 25% of 100 = 25 (no .5 needed)
     // Let's test with max points that gives .5 increments
-    await page.getByLabel("Max Points:").fill("200");
+    await maxPointsInput.fill("200");
+    await expect(maxPointsInput).toHaveValue("200");
     // 12.5% of 200 = 25 (no .5)
     // Actually, let's test with a percentage that results in .5
     // 37.5% of 100 = 37.5
-    await page.getByLabel("Max Points:").fill("100");
+    await maxPointsInput.fill("100");
+    await expect(maxPointsInput).toHaveValue("100");
     // The formula: Math.round((percentage/100) * maxPoints * 2) / 2
     // For 37.5% of 100: Math.round(75) / 2 = 37.5
     // But we're using integer percentages, so let's test actual behavior
@@ -117,8 +128,8 @@ test.describe("Points Calculation", () => {
 
   test("should update points when max points changes", async ({ page }) => {
     const percentageInput = page.getByLabel("Percentage").first();
-    const pointsInput = page.getByLabel("Points").first();
-    const maxPointsInput = page.getByLabel("Max Points:");
+    const pointsInput = page.getByTestId("grade-points-input").first();
+    const maxPointsInput = page.getByTestId("max-points-input");
 
     // Set percentage to 50
     await percentageInput.fill("50");
@@ -141,46 +152,55 @@ test.describe("Points Calculation", () => {
     page,
   }) => {
     const table = page.getByRole("table");
+    const maxPointsInput = page.getByTestId("max-points-input");
 
     // Default is 100, so points row should not be visible
     await expect(table).not.toContainText("Points");
 
     // Change to 200
-    await page.getByLabel("Max Points:").fill("200");
+    await maxPointsInput.fill("200");
+    await expect(maxPointsInput).toHaveValue("200");
     await expect(table).toContainText("Points");
 
     // Change to 50
-    await page.getByLabel("Max Points:").fill("50");
+    await maxPointsInput.fill("50");
+    await expect(maxPointsInput).toHaveValue("50");
     await expect(table).toContainText("Points");
 
     // Change back to 100
-    await page.getByLabel("Max Points:").fill("100");
+    await maxPointsInput.fill("100");
+    await expect(maxPointsInput).toHaveValue("100");
     await expect(table).not.toContainText("Points");
   });
 
   test("should calculate points for multiple grades correctly", async ({
     page,
   }) => {
+    const maxPointsInput = page.getByTestId("max-points-input");
     // Set max points to 200
-    await page.getByLabel("Max Points:").fill("200");
+    await maxPointsInput.fill("200");
+    await expect(maxPointsInput).toHaveValue("200");
 
     // First grade: 50%
     await page.getByLabel("Percentage").first().fill("50");
-    await expect(page.getByLabel("Points").first()).toHaveValue("100");
+    const firstPointsInput = page.getByTestId("grade-points-input").first();
+    await expect(firstPointsInput).toHaveValue("100");
 
     // Add second grade
     await page.getByLabel("Add a new grade item").click();
 
     // Second grade: 75%
     await page.getByLabel("Percentage").nth(1).fill("75");
-    await expect(page.getByLabel("Points").nth(1)).toHaveValue("150");
+    const secondPointsInput = page.getByTestId("grade-points-input").nth(1);
+    await expect(secondPointsInput).toHaveValue("150");
 
     // Change max points to 100
-    await page.getByLabel("Max Points:").fill("100");
+    await maxPointsInput.fill("100");
+    await expect(maxPointsInput).toHaveValue("100");
 
     // First grade should now be 50
-    await expect(page.getByLabel("Points").first()).toHaveValue("50");
+    await expect(firstPointsInput).toHaveValue("50");
     // Second grade should now be 75
-    await expect(page.getByLabel("Points").nth(1)).toHaveValue("75");
+    await expect(secondPointsInput).toHaveValue("75");
   });
 });

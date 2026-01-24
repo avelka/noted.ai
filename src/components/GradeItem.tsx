@@ -106,10 +106,25 @@ export function GradeItem({
           >
             <SelectValue />
           </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="Sek 2">Sek 2</SelectItem>
-            <SelectItem value="Sek 1">Sek 1</SelectItem>
-            <SelectItem value="Sprachen">Sprachen</SelectItem>
+          <SelectContent data-testid={`scale-select-content-${note.id}`}>
+            <SelectItem
+              value="Sek 2"
+              data-testid={`scale-option-${note.id}-sek2`}
+            >
+              Sek 2
+            </SelectItem>
+            <SelectItem
+              value="Sek 1"
+              data-testid={`scale-option-${note.id}-sek1`}
+            >
+              Sek 1
+            </SelectItem>
+            <SelectItem
+              value="Sprachen"
+              data-testid={`scale-option-${note.id}-sprachen`}
+            >
+              Sprachen
+            </SelectItem>
           </SelectContent>
         </Select>
       </div>
@@ -125,9 +140,13 @@ export function GradeItem({
           >
             <SelectValue />
           </SelectTrigger>
-          <SelectContent>
+          <SelectContent data-testid={`grade-select-content-${note.id}`}>
             {scale.labels.map((label) => (
-              <SelectItem key={label} value={label}>
+              <SelectItem
+                key={label}
+                value={label}
+                data-testid={`grade-option-${note.id}-${label}`}
+              >
                 {label}
               </SelectItem>
             ))}
@@ -164,6 +183,7 @@ export function GradeItem({
           onChange={(e) => handlePointsChange(e.target.value)}
           readOnly
           aria-label="Points"
+          data-testid="grade-points-input"
           className="appearance-none min-h-[44px] sm:min-h-0"
         />
       </div>

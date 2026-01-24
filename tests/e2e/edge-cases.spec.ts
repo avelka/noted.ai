@@ -81,7 +81,7 @@ test.describe("Edge Cases", () => {
   });
 
   test("should handle maximum points boundary", async ({ page }) => {
-    const maxPointsInput = page.getByLabel("Max Points:");
+    const maxPointsInput = page.getByTestId("max-points-input");
 
     // Set a high max points value
     await maxPointsInput.fill("1000");

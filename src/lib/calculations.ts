@@ -18,10 +18,15 @@ export function percentageToGrade(
   percentage: number,
   scale: GradeScale,
 ): string {
-  const index = scale.thresholds.findIndex(
-    (threshold) => threshold >= percentage,
-  );
-  return scale.labels[index >= 0 ? index : scale.labels.length - 1];
+  // Find the highest threshold that is <= percentage
+  // Iterate backwards to find the last threshold that meets the condition
+  for (let i = scale.thresholds.length - 1; i >= 0; i--) {
+    if (scale.thresholds[i] <= percentage) {
+      return scale.labels[i];
+    }
+  }
+  // If percentage is less than all thresholds, return the first (lowest) grade
+  return scale.labels[0];
 }
 
 export function percentageToPoints(

@@ -96,7 +96,7 @@ test.describe("Grade Conversion Accuracy", () => {
       await page.waitForTimeout(200);
       await expect(gradeSelect).toContainText("4-");
 
-      await percentageInput.fill("94"); // Just below 94
+      await percentageInput.fill("93"); // Just below 94
       await page.waitForTimeout(200);
       await expect(gradeSelect).toContainText("1-");
 
@@ -119,7 +119,7 @@ test.describe("Grade Conversion Accuracy", () => {
         { percentage: 0, expectedGrade: "6" },
         { percentage: 23, expectedGrade: "6+" },
         { percentage: 50, expectedGrade: "4" },
-        { percentage: 80, expectedGrade: "2-" },
+        { percentage: 80, expectedGrade: "2" }, // 80% threshold gives grade "2"
         { percentage: 94, expectedGrade: "1" },
         { percentage: 100, expectedGrade: "1" },
       ];
@@ -148,7 +148,7 @@ test.describe("Grade Conversion Accuracy", () => {
       await page.waitForTimeout(200);
       await expect(gradeSelect).toContainText("6+");
 
-      await percentageInput.fill("92"); // Just below 92
+      await percentageInput.fill("91"); // Just below 92
       await page.waitForTimeout(200);
       await expect(gradeSelect).toContainText("1-");
 

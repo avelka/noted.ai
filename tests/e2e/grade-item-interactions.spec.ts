@@ -23,19 +23,30 @@ test.describe("Grade Item Interactions", () => {
     // Initially should have Sek 1 scale (default)
     const gradeSelect = page.getByLabel("Grade").first();
     await gradeSelect.click();
-    await expect(page.getByText("6")).toBeVisible();
-    await expect(page.getByText("1+")).toBeVisible();
+    // Wait for dropdown to open by waiting for an expected option to appear
+    // This is more reliable than waiting for the container
+    const option6 = page.getByRole("option", { name: "6" });
+    await expect(option6).toBeVisible({ timeout: 5000 });
+    // Verify other Sek 1 options are visible
+    await expect(page.getByRole("option", { name: "1+" })).toBeVisible();
     await page.keyboard.press("Escape");
 
     // Change to Sek 2 scale
     const scaleSelect = page.getByLabel("Scale").first();
     await scaleSelect.click();
-    await page.getByText("Sek 2").click();
+    // Wait for scale dropdown to open
+    await expect(page.getByRole("option", { name: "Sek 2" })).toBeVisible({
+      timeout: 5000,
+    });
+    await page.getByRole("option", { name: "Sek 2" }).click();
 
     // Verify grade dropdown now shows Sek 2 grades
     await gradeSelect.click();
-    await expect(page.getByText("0")).toBeVisible();
-    await expect(page.getByText("15")).toBeVisible();
+    // Wait for Sek 2 options to appear
+    await expect(page.getByRole("option", { name: "0" })).toBeVisible({
+      timeout: 5000,
+    });
+    await expect(page.getByRole("option", { name: "15" })).toBeVisible();
     await page.keyboard.press("Escape");
   });
 
@@ -109,14 +120,14 @@ test.describe("Grade Item Interactions", () => {
 
   test("should display correct points value", async ({ page }) => {
     const percentageInput = page.getByLabel("Percentage").first();
-    const pointsInput = page.getByLabel("Points").first();
+    const pointsInput = page.getByTestId("grade-points-input").first();
 
     // Set percentage to 50 (default max points is 100)
     await percentageInput.fill("50");
     await expect(pointsInput).toHaveValue("50");
 
     // Change max points to 200
-    await page.getByLabel("Max Points:").fill("200");
+    await page.getByTestId("max-points-input").fill("200");
 
     // Points should update: 50% of 200 = 100
     await expect(pointsInput).toHaveValue("100");

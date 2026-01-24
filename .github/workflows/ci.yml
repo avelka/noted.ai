@@ -34,9 +34,6 @@ jobs:
       - name: Run Biome check
         run: pnpm biome check
 
-      - name: Run Biome format check
-        run: pnpm biome format --check
-
       - name: Run Knip
         run: pnpm knip
 

@@ -7,7 +7,7 @@ test.describe("Grade Calculator", () => {
 
   test("should display the grade calculator interface", async ({ page }) => {
     await expect(page.getByRole("main")).toBeVisible();
-    await expect(page.getByLabel("Max Points:")).toBeVisible();
+    await expect(page.getByTestId("max-points-input")).toBeVisible();
     await expect(page.getByRole("table")).toBeVisible();
     await expect(page.getByLabel("Add a new grade item")).toBeVisible();
   });
@@ -68,12 +68,15 @@ test.describe("Grade Calculator", () => {
     await page.getByLabel("Add a new grade item").click();
     await page.getByLabel("Percentage").first().fill("50");
 
-    // Change max points
-    const pointsInput = page.getByLabel("Max Points:");
-    await pointsInput.fill("200");
+    // Verify initial points value (50% of 100 = 50)
+    const pointsInputField = page.getByTestId("grade-points-input").first();
+    await expect(pointsInputField).toHaveValue("50");
 
-    // Verify points value updates (50% of 200 = 100)
-    const pointsInputField = page.getByLabel("Points").first();
+    // Change max points
+    const maxPointsInput = page.getByTestId("max-points-input");
+    await maxPointsInput.fill("200");
+
+    // Wait for points value to update (50% of 200 = 100)
     await expect(pointsInputField).toHaveValue("100");
   });
 
@@ -115,7 +118,7 @@ test.describe("Grade Calculator", () => {
 
   test("should display points row when points is not 100", async ({ page }) => {
     // Change max points
-    await page.getByLabel("Max Points:").fill("200");
+    await page.getByTestId("max-points-input").fill("200");
 
     // Verify points row appears
     await expect(page.getByRole("table")).toContainText("Points");
@@ -123,7 +126,7 @@ test.describe("Grade Calculator", () => {
 
   test("should not display points row when points is 100", async ({ page }) => {
     // Ensure points is 100
-    await page.getByLabel("Max Points:").fill("100");
+    await page.getByTestId("max-points-input").fill("100");
 
     // Verify points row is not visible
     const table = page.getByRole("table");
@@ -159,8 +162,8 @@ test.describe("Grade Calculator", () => {
     const thirdScaleSelect = page.getByLabel("Scale").nth(2);
     await thirdScaleSelect.click();
     await page.getByText("Sprachen").click();
-    // Verify it shows correct grade for Sprachen (80% = 2- in Sprachen)
-    await expect(page.getByLabel("Grade").nth(2)).toContainText("2-");
+    // Verify it shows correct grade for Sprachen (80% = 2 in Sprachen)
+    await expect(page.getByLabel("Grade").nth(2)).toContainText("2");
 
     // Verify weighted average is calculated correctly
     // (75*1 + 50*1 + 80*1) / 3 = 205/3 ≈ 68

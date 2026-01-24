@@ -63,7 +63,7 @@ describe("percentageToGrade", () => {
   });
 
   it("should return correct grade for values between thresholds", () => {
-    expect(percentageToGrade(25, scales.sek2)).toBe("2");
+    expect(percentageToGrade(25, scales.sek2)).toBe("1"); // 25 is between 20 and 27
     expect(percentageToGrade(60, scales.sek1)).toBe("3-");
     expect(percentageToGrade(80, scales.lang)).toBe("2");
   });

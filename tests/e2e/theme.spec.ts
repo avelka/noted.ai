@@ -18,8 +18,14 @@ test.describe("Theme Toggle", () => {
     // Toggle theme
     await themeToggle.click();
 
-    // Wait for theme to change
-    await page.waitForTimeout(500);
+    // Wait for theme to change by waiting for the class to actually change
+    await page.waitForFunction(
+      ({ expectedDark }) => {
+        const html = document.documentElement;
+        return html.classList.contains("dark") === expectedDark;
+      },
+      { expectedDark: !initialTheme },
+    );
 
     // Verify theme changed
     const newTheme = await html.evaluate((el) => el.classList.contains("dark"));
@@ -37,7 +43,13 @@ test.describe("Theme Toggle", () => {
 
     // Toggle theme
     await themeToggle.click();
-    await page.waitForTimeout(500);
+    await page.waitForFunction(
+      ({ expectedDark }) => {
+        const html = document.documentElement;
+        return html.classList.contains("dark") === expectedDark;
+      },
+      { expectedDark: !initialTheme },
+    );
 
     // Verify theme changed
     const toggledTheme = await html.evaluate((el) =>
@@ -62,9 +74,6 @@ test.describe("Theme Toggle", () => {
 
     // Toggle to dark mode
     await themeToggle.click();
-    await page.waitForTimeout(500);
-
-    // Verify dark class is applied
     await expect(html).toHaveClass(/dark/);
 
     // Verify UI elements are visible (they should be styled differently but still visible)
@@ -74,12 +83,6 @@ test.describe("Theme Toggle", () => {
 
     // Toggle back to light mode
     await themeToggle.click();
-    await page.waitForTimeout(500);
-
-    // Verify dark class is removed
-    const hasDarkClass = await html.evaluate((el) =>
-      el.classList.contains("dark"),
-    );
-    expect(hasDarkClass).toBe(false);
+    await expect(html).not.toHaveClass(/dark/);
   });
 });

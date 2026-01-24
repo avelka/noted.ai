@@ -44,6 +44,7 @@ export function NoteList({
             }
           }}
           aria-label="Max Points:"
+          data-testid="max-points-input"
           className="w-24"
         />
       </div>

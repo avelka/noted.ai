@@ -6,28 +6,29 @@ import * as React from "react";
 import { Button } from "@/components/ui/button";
 
 export function ThemeToggle() {
-  const { theme, setTheme } = useTheme();
+  const { setTheme, resolvedTheme } = useTheme();
   const [mounted, setMounted] = React.useState(false);
 
   React.useEffect(() => {
     setMounted(true);
   }, []);
 
-  if (!mounted) {
-    return (
-      <Button variant="ghost" size="icon" className="w-9 h-9">
-        <Sun className="h-4 w-4" />
-        <span className="sr-only">Toggle theme</span>
-      </Button>
-    );
-  }
+  const handleToggle = React.useCallback(() => {
+    if (!mounted || !resolvedTheme) return;
+    // Toggle based on resolved theme after hydration
+    setTheme(resolvedTheme === "light" ? "dark" : "light");
+  }, [mounted, resolvedTheme, setTheme]);
 
+  // Always render the same structure to avoid hydration mismatches
+  // The icons use CSS classes that respond to the dark class on html,
+  // which may differ between server and client - that's expected and handled
+  // by suppressHydrationWarning on the html element in layout.tsx
   return (
     <Button
       variant="ghost"
       size="icon"
-      onClick={() => setTheme(theme === "light" ? "dark" : "light")}
-      className="w-9 h-9"
+      onClick={handleToggle}
+      className="w-9 h-9 relative"
       aria-label="Toggle theme"
     >
       <Sun className="h-4 w-4 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />

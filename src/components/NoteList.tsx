@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -26,6 +27,8 @@ export function NoteList({
   onDeleteNote,
   onPointsChange,
 }: NoteListProps) {
+  const [pointsInput, setPointsInput] = useState(String(points));
+
   return (
     <div className="container mx-auto space-y-6 p-4 pb-24 sm:pb-32 max-w-7xl">
       <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4">
@@ -36,11 +39,14 @@ export function NoteList({
           id="points-config"
           type="number"
           min="1"
-          value={points}
-          onChange={(e) => {
-            const value = parseInt(e.target.value, 10);
+          value={pointsInput}
+          onChange={(e) => setPointsInput(e.target.value)}
+          onBlur={() => {
+            const value = parseInt(pointsInput, 10);
             if (!Number.isNaN(value) && value >= 1) {
               onPointsChange(value);
+            } else {
+              setPointsInput(String(points));
             }
           }}
           aria-label="Max Points:"

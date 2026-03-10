@@ -98,6 +98,7 @@ describe("NoteList", () => {
 
     const pointsInput = screen.getByDisplayValue("100");
     fireEvent.change(pointsInput, { target: { value: "200" } });
+    fireEvent.blur(pointsInput);
 
     expect(mockOnPointsChange).toHaveBeenCalledWith(200);
   });

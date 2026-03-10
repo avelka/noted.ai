@@ -19,6 +19,8 @@ interface GradeTableProps {
 
 export function GradeTable({ globalScale, points }: GradeTableProps) {
   const scale = getScale(globalScale);
+  const labels = [...scale.labels].reverse();
+  const thresholds = [...scale.thresholds].reverse();
 
   return (
     <div className="w-full overflow-x-auto rounded-lg border">
@@ -31,7 +33,7 @@ export function GradeTable({ globalScale, points }: GradeTableProps) {
             >
               Grade
             </TableHead>
-            {scale.labels.map((label) => (
+            {labels.map((label) => (
               <TableHead key={label} className="text-center min-w-[60px]">
                 {label}
               </TableHead>
@@ -46,7 +48,7 @@ export function GradeTable({ globalScale, points }: GradeTableProps) {
             >
               Percentage (≥)
             </TableHead>
-            {scale.thresholds.map((threshold) => (
+            {thresholds.map((threshold) => (
               <TableCell key={threshold} className="text-center">
                 {threshold}%
               </TableCell>
@@ -60,7 +62,7 @@ export function GradeTable({ globalScale, points }: GradeTableProps) {
               >
                 Points
               </TableHead>
-              {scale.thresholds.map((threshold) => (
+              {thresholds.map((threshold) => (
                 <TableCell key={threshold} className="text-center">
                   {percentageToPoints(threshold, points)}
                 </TableCell>
